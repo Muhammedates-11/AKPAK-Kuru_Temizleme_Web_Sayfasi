@@ -1,0 +1,1 @@
+# AKPAK-Kuru_Temizleme_Web_Sayfasi
