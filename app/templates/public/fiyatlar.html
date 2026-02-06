@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Fiyatlar | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Fiyat Listesi</h1>
+
+<p class="text-sm text-slate-600 mb-6">
+  Aşağıdaki fiyatlar, şubelerimizde uygulanan standart başlangıç fiyatlarıdır. Seçtiğiniz hizmet türüne göre
+  üzerine ek ücret yansıyabilir. Detaylı hesaplama, online sipariş sırasında otomatik yapılmaktadır.
+</p>
+
+<div class="grid md:grid-cols-2 gap-6">
+  <div class="bg-white rounded-xl shadow p-4 text-sm">
+    <h2 class="font-semibold text-lg mb-3">Kıyafet Baz Fiyatları</h2>
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-slate-800 text-white">
+          <th class="px-3 py-2 text-left">Ürün</th>
+          <th class="px-3 py-2 text-right">Baz Fiyat</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for kod, fiyat in urun_fiyatlari.items() %}
+        <tr class="border-b">
+          <td class="px-3 py-1">
+            {{ urun_etiketleri.get(kod, kod) }}
+          </td>
+          <td class="px-3 py-1 text-right">
+            {{ "%.2f"|format(fiyat) }} ₺
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-4 text-sm">
+    <h2 class="font-semibold text-lg mb-3">Hizmet Türü Ek Ücretleri</h2>
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-slate-800 text-white">
+          <th class="px-3 py-2 text-left">Hizmet</th>
+          <th class="px-3 py-2 text-right">Ek Ücret</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for kod, fiyat in hizmet_ek.items() %}
+          {% if kod != 'yok' %}
+          <tr class="border-b">
+            <td class="px-3 py-1">
+              {{ hizmet_etiketleri.get(kod, kod) }}
+            </td>
+            <td class="px-3 py-1 text-right">
+              {{ "%.2f"|format(fiyat) }} ₺
+            </td>
+          </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="mt-4 p-3 bg-sky-50 border border-sky-100 rounded text-xs text-slate-600">
+      <p class="mb-1">
+        <span class="font-semibold">Çamaşır Filesi:</span>
+        {{ "%.2f"|format(file_fiyat) }} ₺ / adet (karışık kilo bazlı yıkama).
+      </p>
+      <p>Toplam tutar; seçilen ürün sayısı, hizmet türü ve varsa çamaşır filesi adedi üzerinden otomatik hesaplanır.</p>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8 flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
+  <p class="text-slate-600">
+    Fiyatlar hakkında daha fazla bilgi almak isterseniz bizimle iletişime geçebilir veya online sipariş formunu doldurabilirsiniz.
+  </p>
+  <a href="{{ url_for('siparis_olustur') }}"
+     class="inline-flex items-center px-4 py-2 rounded-md bg-sky-600 hover:bg-sky-700 text-white font-semibold">
+    Online Sipariş Ver
+  </a>
+</div>
+{% endblock %}

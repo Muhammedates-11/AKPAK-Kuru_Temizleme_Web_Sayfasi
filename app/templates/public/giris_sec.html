@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Giriş Yap | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Giriş Yap</h1>
+<p class="mb-4 text-sm text-slate-600">Lütfen giriş türünü seçin:</p>
+
+<div class="grid gap-4 max-w-md">
+  <!-- Müşteri girişi -->
+  <a href="{{ url_for('giris_musteri') }}" class="block w-full text-center bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-md font-semibold">Müşteri Girişi</a>
+  <!-- Yönetici girişi -->
+  <a href="{{ url_for('giris_admin') }}" class="block w-full text-center bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-md font-semibold">Yönetici Girişi</a>
+</div>
+{% endblock %}

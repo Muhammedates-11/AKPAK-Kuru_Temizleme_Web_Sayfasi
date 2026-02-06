@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Sipariş Takip | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Sipariş Takip</h1>
+
+<p class="mb-4 text-sm text-slate-600">
+  Kuryemiz yakında adresinize gelecektir. Sipariş numaranızı ve telefon numaranızı girerek sipariş durumunu ve tahmini teslim tarihini öğrenebilirsiniz.
+</p>
+<div class="bg-white rounded-lg shadow p-6 max-w-xl mb-6">
+  <form method="post" class="grid md:grid-cols-2 gap-4 text-sm">
+    <div>
+      <label class="block mb-1">Sipariş Numarası (SP-123)</label>
+      <input name="siparis_kodu" type="text" class="w-full border rounded px-2 py-1">
+    </div>
+    <div>
+      <label class="block mb-1">Telefon</label>
+      <input name="telefon" type="text" class="w-full border rounded px-2 py-1">
+    </div>
+    <div class="md:col-span-2">
+      <button class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md">
+        Sorgula
+      </button>
+    </div>
+  </form>
+</div>
+
+{% if siparis %}
+<div class="bg-white rounded-lg shadow p-6 max-w-xl text-sm">
+  <p><span class="font-semibold">Sipariş ID:</span> SP-{{ siparis.siparis_id }}</p>
+  <p><span class="font-semibold">Müşteri:</span> {{ siparis.ad_soyad }}</p>
+  <p><span class="font-semibold">Telefon:</span> {{ siparis.telefon }}</p>
+  <p><span class="font-semibold">Tarih:</span> {{ siparis.siparis_tarihi }}</p>
+  <p><span class="font-semibold">Durum:</span> {{ siparis.durum_aciklama or siparis.durum|upper }}</p>
+  {% if siparis.tahmini_teslim %}
+  <p><span class="font-semibold">Tahmini Teslim:</span> {{ siparis.tahmini_teslim }}</p>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Siparişler | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Siparişler</h1>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full text-sm bg-white shadow rounded-lg overflow-hidden">
+    <thead class="bg-slate-800 text-white">
+      <tr>
+        <th class="px-3 py-2 text-left">ID</th>
+        <th class="px-3 py-2 text-left">Tarih</th>
+        <th class="px-3 py-2 text-left">Müşteri</th>
+        <th class="px-3 py-2 text-left">Telefon</th>
+        <th class="px-3 py-2 text-left">Durum</th>
+        <th class="px-3 py-2 text-left">Durum Güncelle</th>
+        <th class="px-3 py-2 text-left">Ödeme</th>
+        <th class="px-3 py-2 text-right">Tutar</th>
+        <th class="px-3 py-2 text-left">Açıklama</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in siparisler %}
+      <tr class="border-b last:border-b-0 hover:bg-slate-50">
+        <td class="px-3 py-2">SP-{{ s.siparis_id }}</td>
+        <td class="px-3 py-2">{{ s.siparis_tarihi }}</td>
+        <td class="px-3 py-2">{{ s.musteri_adi }}</td>
+        <td class="px-3 py-2">{{ s.telefon }}</td>
+        <td class="px-3 py-2">
+          <div class="uppercase font-semibold">{{ s.durum }}</div>
+          <div class="text-xs text-slate-600 mt-1">{{ s.durum_mesaji }}</div>
+        </td>
+        <td class="px-3 py-2">
+          <form method="POST" action="{{ url_for('admin_siparis_durum_guncelle', siparis_id=s.siparis_id) }}" class="flex items-center gap-2">
+            <input type="hidden" name="page" value="{{ page }}">
+            <select name="durum" class="border rounded px-2 py-1 text-sm">
+              {% for opt in durum_secenekleri %}
+                <option value="{{ opt }}" {% if opt == s.durum %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
+              Kaydet
+            </button>
+          </form>
+        </td>
+        <td class="px-3 py-2">{{ s.odeme_yontemi }}</td>
+        <td class="px-3 py-2 text-right">{{ "%.2f"|format(s.toplam_tutar) }} ₺</td>
+        <td class="px-3 py-2">
+          {% if s.aciklama %}
+            <ul class="list-disc pl-4 space-y-1">
+              {% for line in s.aciklama.split('\n') if line.strip() %}
+                <li>{{ line.strip() }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 flex items-center justify-between">
+  {% if page > 1 %}
+    <a href="{{ url_for('siparisler_sayfa', page=page-1) }}" class="px-3 py-2 border rounded hover:bg-slate-200">Önceki</a>
+  {% else %}
+    <span class="px-3 py-2 text-slate-400">Önceki</span>
+  {% endif %}
+
+  <span class="text-sm">Sayfa {{ page }} / {{ total_pages }}</span>
+
+  {% if page < total_pages %}
+    <a href="{{ url_for('siparisler_sayfa', page=page+1) }}" class="px-3 py-2 border rounded hover:bg-slate-200">Sonraki</a>
+  {% else %}
+    <span class="px-3 py-2 text-slate-400">Sonraki</span>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Siparişlerim | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Siparişlerim</h1>
+
+{% if orders %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm bg-white shadow rounded-lg overflow-hidden">
+      <thead class="bg-slate-800 text-white">
+        <tr>
+          <th class="px-3 py-2 text-left">ID</th>
+          <th class="px-3 py-2 text-left">Tarih</th>
+          <th class="px-3 py-2 text-left">Şube</th>
+          <th class="px-3 py-2 text-left">Durum</th>
+          <th class="px-3 py-2 text-left">Ödeme</th>
+          <th class="px-3 py-2 text-right">Tutar</th>
+          <th class="px-3 py-2 text-left">Detaylar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr class="border-b last:border-b-0 hover:bg-slate-50">
+          <td class="px-3 py-2">SP-{{ o.siparis_id }}</td>
+          <td class="px-3 py-2">{{ o.siparis_tarihi }}</td>
+          <td class="px-3 py-2">
+            <div class="font-semibold">{{ o.sehir }} - {{ o.sube_adi }}</div>
+            <div class="text-xs text-slate-500 mt-1">
+              {{ o.sube_adres if o.sube_adres else 'Adres: -' }}
+            </div>
+            <div class="text-xs text-slate-500">
+              Tel: {{ o.sube_telefon if o.sube_telefon else '-' }}
+            </div>
+          </td>
+          <td class="px-3 py-2">
+            <div class="uppercase font-semibold">{{ o.durum }}</div>
+            <div class="text-xs text-slate-600 mt-1">
+              {{ o.durum_mesaji }}
+            </div>
+          </td>
+          <td class="px-3 py-2">{{ o.odeme_yontemi }}</td>
+          <td class="px-3 py-2 text-right">{{ "%.2f"|format(o.toplam_tutar) }} ₺</td>
+          <td class="px-3 py-2">
+            {% if o.aciklama_satirlari %}
+              <ul class="list-disc pl-4 space-y-1">
+              {% for line in o.aciklama_satirlari %}
+                <li>{{ line }}</li>
+              {% endfor %}
+              </ul>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-sm text-slate-600">Henüz siparişiniz bulunmamaktadır.</p>
+{% endif %}
+{% endblock %}

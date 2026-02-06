@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% block title %}Online Sipariş Oluştur | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Online Sipariş Oluştur</h1>
+
+<p class="text-sm text-slate-600 mb-4">
+  Kıyafet türü/adet ve hizmet türlerini seçin. Tahmini toplam tutar arka planda hesaplanır ve siparişe kaydedilir.
+</p>
+
+<div class="bg-white rounded-lg shadow p-6 max-w-3xl">
+  <form method="post" class="space-y-6 text-sm">
+
+    <!-- MÜŞTERİ BİLGİLERİ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-1">Ad Soyad</label>
+        <input
+          name="ad_soyad"
+          type="text"
+          class="w-full border rounded px-2 py-1"
+          value="{{ mevcut_ad_soyad }}"
+          placeholder="Adınızı ve soyadınızı yazın"
+        >
+      </div>
+      <div>
+        <label class="block mb-1">Telefon</label>
+        <input
+          name="telefon"
+          type="text"
+          class="w-full border rounded px-2 py-1"
+          value="{{ mevcut_telefon }}"
+          placeholder="Telefon numaranız"
+        >
+      </div>
+    </div>
+
+    <!-- ŞUBE / ÖDEME -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-1">Şube</label>
+        <select name="sube" class="w-full border rounded px-2 py-1" required>
+          <option value="" selected disabled>Şube seçin</option>
+
+          {% set liste = (branches if branches is defined else subeler) %}
+          {% for b in liste %}
+            <option value="{{ b.sehir }} - {{ b.ad }}">
+                  {{ b.sehir }} - {{ b.ad }}
+            </option>
+          {% endfor %}
+
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1">Ödeme Yöntemi</label>
+        <select
+          name="odeme_yontemi"
+          id="odeme-yontemi-select"
+          class="w-full border rounded px-2 py-1"
+          required
+        >
+          <option value="kapida">Kapıda Ödeme</option>
+          <option value="kart">Kart ile Öde</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KART BİLGİLERİ (opsiyonel) -->
+    <div id="kart-bilgileri" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden">
+      <div>
+        <label class="block mb-1">Kart Numarası</label>
+        <input
+          name="kart_numarasi"
+          type="text"
+          maxlength="19"
+          class="w-full border rounded px-2 py-1"
+          placeholder="16 haneli kart no"
+        >
+      </div>
+      <div>
+        <label class="block mb-1">Son Kullanma (AA/YY)</label>
+        <input
+          name="kart_skt"
+          type="text"
+          maxlength="5"
+          class="w-full border rounded px-2 py-1"
+          placeholder="04/27"
+        >
+      </div>
+      <div>
+        <label class="block mb-1">CVC</label>
+        <input
+          name="kart_cvc"
+          type="text"
+          maxlength="4"
+          class="w-full border rounded px-2 py-1"
+          placeholder="123"
+        >
+      </div>
+    </div>
+
+    <!-- ADRES -->
+    <div>
+      <label class="block mb-1">Teslimat Adresi</label>
+      <textarea
+        name="adres"
+        rows="2"
+        class="w-full border rounded px-2 py-1"
+        placeholder="Adresinizi yazın"
+        required
+      ></textarea>
+    </div>
+
+    <!-- ÇAMAŞIR FİLESİ -->
+    <div class="border rounded-lg p-4">
+      <h2 class="font-semibold mb-2">
+        Çamaşır Filesi ({{ file_fiyat }} TL / adet)
+      </h2>
+      <p class="text-xs text-slate-500 mb-2">
+        Bir file yaklaşık 7 kg karışık çamaşır içindir.
+      </p>
+      <label class="block mb-1">File Adedi</label>
+      <input
+        name="filesi_adedi"
+        type="number"
+        min="0"
+        value="0"
+        class="w-32 border rounded px-2 py-1"
+      >
+    </div>
+
+    <!-- PARÇA BAZLI ÜRÜNLER -->
+    <div class="border rounded-lg p-4 space-y-3">
+      <h2 class="font-semibold mb-2">Parça Bazlı Kıyafetler</h2>
+      <p class="text-xs text-slate-500 mb-3">
+        Her ürün için adet ve hizmet türünü seçin.
+      </p>
+
+      {% set urunler = [
+        ('gomlek', 'Gömlek'),
+        ('tisort', 'Tişört / Crop'),
+        ('kazak', 'Kazak / Sweatshirt'),
+        ('pantolon', 'Pantolon / Eşofman / Tayt'),
+        ('elbise', 'Elbise / Etek'),
+        ('mont', 'Mont / Kaban'),
+        ('takim', 'Takım Elbise'),
+        ('corap', 'Çorap (çift)')
+      ] %}
+
+      {% for key, label in urunler %}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+        <div>
+          <label class="block mb-1">{{ label }} (adet)</label>
+          <input
+            name="{{ key }}_adet"
+            type="number"
+            min="0"
+            value="0"
+            class="w-24 border rounded px-2 py-1"
+          >
+        </div>
+        <div class="md:col-span-2">
+          <label class="block mb-1">Hizmet Türü</label>
+          <select
+            name="{{ key }}_hizmet"
+            class="w-full border rounded px-2 py-1"
+          >
+            <option value="yok">Seçim yok / Dahil etme</option>
+            <option value="yikama">Yıkama</option>
+            <option value="yikama_kurutma">Yıkama + Kurutma</option>
+            <option value="yikama_kurutma_utu">Yıkama + Kurutma + Ütü</option>
+            <option value="sadece_utu">Sadece Ütü</option>
+          </select>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- TOPLAM TUTAR GÖSTERGESİ -->
+    <div class="p-4 bg-slate-50 border rounded text-sm">
+      <p class="font-semibold">
+        Tahmini Toplam Tutar:
+        <span id="toplam-tutar">0 TL</span>
+      </p>
+      <p class="text-xs text-slate-500">
+        Seçtiğiniz ürün ve hizmetlere göre otomatik hesaplanır.
+      </p>
+    </div>
+
+    <!-- ONAY -->
+    <div class="flex items-center gap-2">
+      <input id="onay" type="checkbox" class="h-4 w-4" required>
+      <label for="onay" class="text-xs text-slate-600">
+        Verdiğim bilgilerin doğru olduğunu ve hizmet koşullarını kabul ettiğimi onaylıyorum.
+      </label>
+    </div>
+
+    <!-- GÖNDER BUTONU -->
+    <button
+      class="w-full bg-sky-600 hover:bg-sky-700 text-white py-2 rounded-md font-semibold"
+    >
+      Sipariş Talebini Gönder
+    </button>
+  </form>
+</div>
+
+<!-- JS: ödeme yöntemi + fiyat hesaplama -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const odemeSelect = document.getElementById('odeme-yontemi-select');
+  const kartDiv = document.getElementById('kart-bilgileri');
+
+  function toggleKartAlan() {
+    if (odemeSelect.value === 'kart') {
+      kartDiv.classList.remove('hidden');
+    } else {
+      kartDiv.classList.add('hidden');
+    }
+  }
+
+  if (odemeSelect) {
+    odemeSelect.addEventListener('change', toggleKartAlan);
+    toggleKartAlan();
+  }
+// Fiyatlar backend'den geliyor (Jinja değerlerini JS'e düzgün aktar)
+const basePrices   = JSON.parse('{{ baz_fiyatlar|tojson|safe }}');
+const serviceExtra = JSON.parse('{{ hizmet_ek|tojson|safe }}');
+const filePrice    = Number('{{ file_fiyat|default(300) }}');
+
+  const itemKeys = [
+    'gomlek', 'tisort', 'kazak',
+    'pantolon', 'elbise', 'mont',
+    'takim', 'corap'
+  ];
+
+  function calculateTotal() {
+    let total = 0;
+
+    // Çamaşır filesi
+    const fileInput = document.querySelector('input[name="filesi_adedi"]');
+    const fileCount = parseInt(fileInput && fileInput.value) || 0;
+    if (fileCount > 0) {
+      total += fileCount * filePrice;
+    }
+
+    // Parça bazlı ürünler
+    itemKeys.forEach(function (key) {
+      const qtyEl = document.querySelector('input[name="' + key + '_adet"]');
+      const svcEl = document.querySelector('select[name="' + key + '_hizmet"]');
+
+      const qty = parseInt(qtyEl && qtyEl.value) || 0;
+      const svc = svcEl ? svcEl.value : 'yok';
+
+      if (qty > 0 && svc !== 'yok') {
+        const base = basePrices[key] || 0;
+        const extra = serviceExtra[svc] || 0;
+        total += qty * (base + extra);
+      }
+    });
+
+    const totalSpan = document.getElementById('toplam-tutar');
+    if (totalSpan) {
+      totalSpan.textContent = total.toFixed(2) + ' TL';
+    }
+  }
+
+  // Eventler
+  const fileInputEl = document.querySelector('input[name="filesi_adedi"]');
+  if (fileInputEl) {
+    fileInputEl.addEventListener('input', calculateTotal);
+  }
+
+  itemKeys.forEach(function (key) {
+    const qtyEl = document.querySelector('input[name="' + key + '_adet"]');
+    const svcEl = document.querySelector('select[name="' + key + '_hizmet"]');
+
+    if (qtyEl) qtyEl.addEventListener('input', calculateTotal);
+    if (svcEl) svcEl.addEventListener('change', calculateTotal);
+  });
+
+  calculateTotal();
+});
+</script>
+{% endblock %}

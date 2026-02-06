@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}AKPAK Kuru Temizleme{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden rounded-2xl shadow-lg bg-gradient-to-br from-sky-700 via-sky-800 to-slate-900 text-white">
+  <div class="absolute inset-0 opacity-20">
+    <!-- Hafif motifler için basit daireler -->
+    <div class="w-64 h-64 rounded-full bg-sky-300 blur-3xl -top-10 -left-10 absolute"></div>
+    <div class="w-72 h-72 rounded-full bg-emerald-300 blur-3xl bottom-0 right-0 absolute"></div>
+  </div>
+
+  <div class="relative px-8 py-12 md:px-12 md:py-16 flex flex-col md:flex-row items-center gap-10">
+    <div class="flex-1">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">
+        AKPAK Kuru Temizleme ile<br/>
+        <span class="text-amber-300">her gün tertemiz ve şık</span>
+      </h1>
+      <p class="text-sm md:text-base text-slate-100 mb-6 max-w-xl">
+        AKPAK, modern ekipmanları ve profesyonel ekibiyle giysilerinizi özenle temizler.
+        Online sipariş verin, kurye adresinizden alsın; zamanınızı sevdiklerinize ayırın.
+      </p>
+
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="{{ url_for('siparis_olustur') }}"
+           class="inline-flex items-center px-4 py-2 rounded-md bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold">
+          Online Sipariş Ver
+        </a>
+        <a href="{{ url_for('hizmetler') }}"
+           class="inline-flex items-center px-4 py-2 rounded-md border border-slate-200/60 text-slate-50 hover:bg-slate-800/60">
+          Hizmetlerimizi Keşfet
+        </a>
+        <a href="{{ url_for('subeler_sayfa') }}"
+           class="inline-flex items-center px-4 py-2 rounded-md border border-slate-200/40 text-slate-50 hover:bg-slate-800/60">
+          Şubelerimizi Gör
+        </a>
+      </div>
+    </div>
+
+    <div class="flex-1 flex justify-center">
+      <div class="bg-slate-900/40 border border-sky-300/30 rounded-2xl p-6 backdrop-blur-sm max-w-xs w-full">
+        <h2 class="text-lg font-semibold mb-2">Neden AKPAK?</h2>
+        <ul class="space-y-2 text-xs md:text-sm text-slate-100">
+          <li>• Profesyonel kuru temizleme ve ütü hizmeti</li>
+          <li>• Online sipariş ve kapıdan alım / teslimat</li>
+          <li>• Şeffaf fiyatlandırma ve net hizmet seçenekleri</li>
+          <li>• Her şubede aynı kalite standardı</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8 grid md:grid-cols-3 gap-4 text-sm">
+  <div class="bg-white rounded-xl shadow p-4">
+    <h3 class="font-semibold mb-2">Online Sipariş Kolaylığı</h3>
+    <p class="text-slate-600">
+      Evden çıkmadan, birkaç adımda sipariş verin. Kuryemiz adresinizden teslim alıp tekrar kapınıza getirir.
+    </p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-4">
+    <h3 class="font-semibold mb-2">Profesyonel Bakım</h3>
+    <p class="text-slate-600">
+      Farklı kumaş türlerine uygun yıkama ve kuru temizleme programlarıyla giysileriniz güvenle temizlenir.
+    </p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-4">
+    <h3 class="font-semibold mb-2">Şeffaf Fiyatlar</h3>
+    <p class="text-slate-600">
+      Tüm hizmetlerimizin fiyatlarını <a href="{{ url_for('fiyatlar') }}" class="text-sky-600 underline">Fiyatlar</a>
+      sayfasından ayrıntılı görebilirsiniz.
+    </p>
+  </div>
+</div>
+{% endblock %}

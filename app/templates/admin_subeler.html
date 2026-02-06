@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Şube Yönetimi | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Şube Yönetimi</h1>
+
+<p class="text-sm text-slate-600 mb-4">
+  Buradan mevcut şubeleri güncelleyebilir, yeni şube ekleyebilir veya gerekirse silebilirsiniz.
+</p>
+
+<div class="bg-white rounded-xl shadow p-4 mb-6">
+  <h2 class="font-semibold mb-3 text-sm">Mevcut Şubeler</h2>
+
+  {% if subeler %}
+  <div class="overflow-x-auto text-xs md:text-sm">
+    <table class="w-full border text-left">
+      <thead>
+        <tr class="bg-slate-800 text-white">
+          <th class="px-2 py-2">ID</th>
+          <th class="px-2 py-2">Ad</th>
+          <th class="px-2 py-2">Şehir</th>
+          <th class="px-2 py-2">Adres</th>
+          <th class="px-2 py-2">Telefon</th>
+          <th class="px-2 py-2 text-center">Aktif</th>
+          <th class="px-2 py-2 text-right">İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in subeler %}
+        <tr class="border-t">
+          <form method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="sube_id" value="{{ s.sube_id }}">
+            <td class="px-2 py-1 align-top">{{ s.sube_id }}</td>
+            <td class="px-2 py-1 align-top">
+              <input name="ad" value="{{ s.ad }}" class="w-full border rounded px-1 py-0.5">
+            </td>
+            <td class="px-2 py-1 align-top">
+              <input name="sehir" value="{{ s.sehir }}" class="w-full border rounded px-1 py-0.5">
+            </td>
+            <td class="px-2 py-1 align-top">
+              <input name="adres" value="{{ s.adres or '' }}" class="w-full border rounded px-1 py-0.5">
+            </td>
+            <td class="px-2 py-1 align-top">
+              <input name="telefon" value="{{ s.telefon or '' }}" class="w-full border rounded px-1 py-0.5">
+            </td>
+            <td class="px-2 py-1 text-center align-top">
+              <input type="checkbox" name="aktif" {% if s.aktif %}checked{% endif %}>
+            </td>
+            <td class="px-2 py-1 text-right align-top space-x-1">
+              <button class="inline-flex px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs">
+                Kaydet
+              </button>
+          </form>
+              <form method="post" style="display:inline;">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="sube_id" value="{{ s.sube_id }}">
+                <button class="inline-flex px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs"
+                        onclick="return confirm('Bu şubeyi silmek istediğinize emin misiniz?');">
+                  Sil
+                </button>
+              </form>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="text-xs text-slate-500">Henüz şube kaydı bulunmuyor.</p>
+  {% endif %}
+</div>
+
+<div class="bg-white rounded-xl shadow p-4">
+  <h2 class="font-semibold mb-3 text-sm">Yeni Şube Ekle</h2>
+  <form method="post" class="grid md:grid-cols-2 gap-3 text-xs md:text-sm">
+    <input type="hidden" name="action" value="add">
+    <div>
+      <label class="block mb-1">Şube Adı</label>
+      <input name="ad" class="w-full border rounded px-2 py-1" required placeholder="Örn: İstanbul Merkez">
+    </div>
+    <div>
+      <label class="block mb-1">Şehir</label>
+      <input name="sehir" class="w-full border rounded px-2 py-1" required placeholder="Örn: İstanbul">
+    </div>
+    <div>
+      <label class="block mb-1">Adres</label>
+      <input name="adres" class="w-full border rounded px-2 py-1" placeholder="İsteğe bağlı">
+    </div>
+    <div>
+      <label class="block mb-1">Telefon</label>
+      <input name="telefon" class="w-full border rounded px-2 py-1" placeholder="İsteğe bağlı">
+    </div>
+    <div class="flex items-center gap-2">
+      <input type="checkbox" name="aktif" checked id="yeni-aktif">
+      <label for="yeni-aktif">Aktif şube</label>
+    </div>
+    <div class="md:col-span-2">
+      <button class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-md text-sm">
+        Şube Ekle
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

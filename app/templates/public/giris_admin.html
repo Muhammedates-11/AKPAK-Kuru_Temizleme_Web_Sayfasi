@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Yönetici Girişi | AKPAK{% endblock %}
+
+{% block content %}
+<div class="grid lg:grid-cols-2 gap-6 items-stretch">
+  <div class="rounded-2xl overflow-hidden shadow-lg ring-1 ring-slate-200 bg-gradient-to-br from-amber-700 via-amber-800 to-slate-900">
+    <div class="p-6 md:p-8 h-full flex flex-col justify-between text-white">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold">Yönetici Girişi</h1>
+        <p class="mt-2 text-sm text-white/85 max-w-md">
+          Yönetim paneli, siparişler, müşteriler, şubeler ve fiyat yönetimi için giriş yapın.
+        </p>
+      </div>
+
+      <div class="mt-6 grid gap-3 text-xs">
+        <div class="rounded-xl bg-white/10 ring-1 ring-white/10 p-4">
+          <p class="font-semibold">Yetkili Alan</p>
+          <p class="text-white/80 mt-1">Bu bölüm sadece yöneticiler içindir.</p>
+        </div>
+        <a href="{{ url_for('giris_musteri') }}" class="inline-flex items-center justify-between rounded-xl bg-white/10 ring-1 ring-white/10 px-4 py-3 hover:bg-white/15">
+          <span class="text-white/90">Müşteri girişine dön</span>
+          <span class="text-white/70">←</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-2xl bg-white shadow-lg ring-1 ring-slate-200 p-6 md:p-8">
+    <form method="post" class="space-y-4 text-sm">
+      <div>
+        <label class="block mb-1 font-medium">E-posta</label>
+        <input name="email" type="email"
+               class="w-full rounded-xl border border-slate-200 px-3 py-2 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300"
+               placeholder="admin@mail.com" required>
+      </div>
+
+      <div>
+        <label class="block mb-1 font-medium">Şifre</label>
+        <input name="sifre" type="password"
+               class="w-full rounded-xl border border-slate-200 px-3 py-2 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300"
+               placeholder="••••••••" required>
+      </div>
+
+      <button class="w-full rounded-xl bg-amber-600 hover:bg-amber-700 px-4 py-2.5 font-semibold text-white">
+        Giriş Yap
+      </button>
+    </form>
+
+    <div class="mt-4 text-right text-xs">
+      <a href="{{ url_for('sifre_unuttum') }}" class="text-sky-700 hover:text-sky-900 underline underline-offset-4">Şifremi unuttum</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

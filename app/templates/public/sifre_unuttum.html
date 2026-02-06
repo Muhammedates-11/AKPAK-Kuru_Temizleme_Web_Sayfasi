@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Şifremi Unuttum | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Şifremi Unuttum</h1>
+
+<div class="bg-white border border-slate-100 rounded-xl shadow p-5 max-w-xl">
+  {% if step == 1 %}
+    <p class="text-sm text-slate-600 mb-4">
+      E-posta adresinizi girin, doğrulama kodu gönderelim.
+    </p>
+    <form method="POST">
+      <label class="block text-sm font-semibold mb-1">E-posta</label>
+      <input type="email" name="email" class="w-full border rounded-md px-3 py-2" placeholder="ornek@mail.com" required>
+      <button class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-md font-semibold">
+        Kod Gönder
+      </button>
+    </form>
+
+  {% elif step == 2 %}
+    <p class="text-sm text-slate-600 mb-4">
+      E-posta adresinize gönderilen 6 haneli kodu girin. (10 dk geçerli)
+    </p>
+    <form method="POST">
+      <label class="block text-sm font-semibold mb-1">Doğrulama Kodu</label>
+      <input type="text" name="kod" maxlength="6" class="w-full border rounded-md px-3 py-2" placeholder="123456" required>
+      <button class="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-semibold">
+        Doğrula
+      </button>
+    </form>
+
+  {% elif step == 3 %}
+    <p class="text-sm text-slate-600 mb-4">
+      Yeni şifrenizi belirleyin.
+    </p>
+    <form method="POST">
+      <label class="block text-sm font-semibold mb-1">Yeni Şifre</label>
+      <input type="password" name="new_password" class="w-full border rounded-md px-3 py-2" required>
+
+      <label class="block text-sm font-semibold mb-1 mt-3">Yeni Şifre (Tekrar)</label>
+      <input type="password" name="new_password2" class="w-full border rounded-md px-3 py-2" required>
+
+      <button class="mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-md font-semibold">
+        Şifreyi Güncelle
+      </button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

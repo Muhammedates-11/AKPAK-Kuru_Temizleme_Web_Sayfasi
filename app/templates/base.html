@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}AKPAK Kuru Temizleme{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+  <nav class="bg-slate-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="{{ url_for('public_index') }}" class="font-bold text-lg">
+        AKPAK Kuru Temizleme
+      </a>
+
+      <div class="flex gap-4 text-sm items-center">
+
+        {% if not session.get('user_id') %}
+          <!-- GİRİŞ YAPMAMIŞ KULLANICI -->
+          <a href="{{ url_for('public_index') }}" class="hover:text-sky-300">Ana Sayfa</a>
+          <a href="{{ url_for('hizmetler') }}" class="hover:text-sky-300">Hizmetler</a>
+          <a href="{{ url_for('fiyatlar') }}" class="hover:text-sky-300">Fiyatlar</a>
+          <a href="{{ url_for('subeler_sayfa') }}" class="hover:text-sky-300">Şubeler</a>
+          <a href="{{ url_for('siparis_olustur') }}" class="hover:text-sky-300">Online Sipariş Ver</a>
+          <a href="{{ url_for('giris') }}" class="hover:text-sky-300">Giriş Yap</a>
+          <a href="{{ url_for('uye_ol') }}" class="hover:text-sky-300">Üye Ol</a>
+
+        {% elif session.get('is_admin') %}
+          <!-- YÖNETİCİ MENÜSÜ -->
+          <span class="text-xs md:text-sm text-slate-300">
+            Hoş geldiniz, {{ session.get('user_ad') }}
+          </span>
+
+          <a href="{{ url_for('admin_index') }}" class="hover:text-amber-300">Yönetim Paneli</a>
+          <a href="{{ url_for('musteriler_sayfa') }}" class="hover:text-amber-300">Müşteriler</a>
+          <a href="{{ url_for('siparisler_sayfa') }}" class="hover:text-amber-300">Siparişler</a>
+          <a href="{{ url_for('admin_subeler') }}" class="hover:text-amber-300">Şubeler</a>
+          <a href="{{ url_for('admin_fiyatlar') }}" class="hover:text-amber-300">Fiyatlar</a>
+          <a href="{{ url_for('cikis') }}" class="hover:text-red-300">Çıkış</a>
+
+        {% else %}
+          <!-- MÜŞTERİ MENÜSÜ -->
+          <span class="text-xs md:text-sm text-slate-300">
+            Hoş geldiniz, {{ session.get('user_ad') }}
+          </span>
+
+          <a href="{{ url_for('public_index') }}" class="hover:text-sky-300">Ana Sayfa</a>
+          <a href="{{ url_for('hizmetler') }}" class="hover:text-sky-300">Hizmetler</a>
+          <a href="{{ url_for('fiyatlar') }}" class="hover:text-sky-300">Fiyatlar</a>
+          <a href="{{ url_for('subeler_sayfa') }}" class="hover:text-sky-300">Şubeler</a>
+          <a href="{{ url_for('siparis_olustur') }}" class="hover:text-sky-300">Online Sipariş Ver</a>
+          <a href="{{ url_for('siparislerim') }}" class="hover:text-sky-300">Siparişlerim</a>
+          <a href="{{ url_for('panel') }}" class="hover:text-sky-300">Hesap Bilgilerim</a>
+          <a href="{{ url_for('cikis') }}" class="hover:text-red-300">Çıkış</a>
+
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4 space-y-2">
+          {% for category, message in messages %}
+            <div class="px-4 py-2 rounded text-sm
+                        {% if category == 'success' %}bg-emerald-100 text-emerald-800
+                        {% elif category == 'error' %}bg-red-100 text-red-800
+                        {% elif category == 'warning' %}bg-amber-100 text-amber-800
+                        {% else %}bg-sky-100 text-sky-800{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 text-xs text-center py-3">
+    © 2025 AKPAK Kuru Temizleme. Tüm hakları saklıdır.
+  </footer>
+
+  <!-- Sabit iletişim kutusu -->
+  <div class="fixed bottom-4 left-4 bg-white text-slate-700 border border-slate-300 rounded-lg shadow p-3 text-xs space-y-1 z-50">
+    <p><span class="font-semibold">İletişim:</span> 05380292532</p>
+    <a href="{{ url_for('iletisim') }}" class="text-sky-600 underline">Soru / istek / görüş</a>
+  </div>
+</body>
+</html>

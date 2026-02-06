@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Giriş Yap | AKPAK{% endblock %}
+
+{% block content %}
+<div class="grid lg:grid-cols-2 gap-6 items-stretch">
+  <!-- Sol: görsel blok -->
+  <div class="hidden lg:block rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-50 to-indigo-50 p-8 relative overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-72 h-72 bg-sky-200/70 blur-2xl rounded-full"></div>
+    <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-200/60 blur-2xl rounded-full"></div>
+
+    <div class="relative">
+      <h1 class="text-3xl font-extrabold text-slate-900">Tekrar hoş geldin 👋</h1>
+      <p class="text-slate-600 mt-2 leading-relaxed">
+        Giriş yap, siparişlerini yönet ve durum güncellemelerini anlık takip et.
+      </p>
+
+      <div class="mt-6 grid gap-3 text-sm">
+        <div class="rounded-2xl bg-white/80 border border-white p-4">
+          <div class="font-semibold">✅ Siparişlerim</div>
+          <div class="text-slate-600">Tüm detayları görüntüle.</div>
+        </div>
+        <div class="rounded-2xl bg-white/80 border border-white p-4">
+          <div class="font-semibold">✅ Sipariş Takip</div>
+          <div class="text-slate-600">Durum değişikliklerini gör.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sağ: form -->
+  <div class="rounded-3xl border border-slate-200 bg-white shadow-sm p-7 max-w-lg w-full mx-auto">
+    <h1 class="text-2xl font-extrabold text-slate-900 mb-1">Giriş Yap</h1>
+    <p class="text-slate-600 mb-5 text-sm">E-posta ve şifrenle devam et.</p>
+
+    <form method="post" class="space-y-4 text-sm">
+      <div>
+        <label class="block mb-1 text-slate-700 font-semibold">E-posta</label>
+        <input name="email" type="email"
+               class="w-full border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-4 focus:ring-sky-100"
+               placeholder="ornek@mail.com" required>
+      </div>
+
+      <div>
+        <label class="block mb-1 text-slate-700 font-semibold">Şifre</label>
+        <input name="sifre" type="password"
+               class="w-full border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-4 focus:ring-sky-100"
+               placeholder="••••••••" required>
+      </div>
+
+      <button class="w-full bg-sky-600 hover:bg-sky-700 text-white py-2.5 rounded-xl font-extrabold shadow">
+        Giriş Yap
+      </button>
+
+      <div class="flex items-center justify-between text-xs text-slate-600 pt-2">
+        <a class="underline hover:text-slate-800" href="{{ url_for('uye_ol') }}">Hesabın yok mu? Üye ol</a>
+        <a class="underline hover:text-slate-800" href="{{ url_for('panel') }}">Panel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

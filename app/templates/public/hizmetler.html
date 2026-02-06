@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Hizmetler | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Hizmetlerimiz</h1>
+
+<p class="text-sm text-slate-600 mb-6">
+  AKPAK Kuru Temizleme olarak kıyafetleriniz için farklı ihtiyaçlara yönelik esnek hizmet seçenekleri sunuyoruz.
+</p>
+
+<div class="grid md:grid-cols-2 gap-4 text-sm">
+  <div class="bg-white rounded-xl shadow p-4">
+    <h2 class="font-semibold text-lg mb-2">1. Yıkama</h2>
+    <p class="text-slate-600 mb-2">
+      Standart yıkama hizmetimiz; günlük kullanım kıyafetleriniz için idealdir.
+    </p>
+    <ul class="list-disc list-inside text-slate-600 space-y-1">
+      <li>Uygun deterjan ve sıcaklık seçimi</li>
+      <li>Renk ve kumaş türüne göre ayrıştırma</li>
+      <li>Ekonomik ve hızlı çözüm</li>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-4">
+    <h2 class="font-semibold text-lg mb-2">2. Yıkama + Kurutma</h2>
+    <p class="text-slate-600 mb-2">
+      Yıkanan kıyafetleriniz endüstriyel makinelerde hijyenik şekilde kurutulur.
+    </p>
+    <ul class="list-disc list-inside text-slate-600 space-y-1">
+      <li>Hızlı kurutma</li>
+      <li>Mevsimsel yoğunlukta büyük konfor</li>
+      <li>Katlanmış teslim seçeneği</li>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-4">
+    <h2 class="font-semibold text-lg mb-2">3. Yıkama + Kurutma + Ütü</h2>
+    <p class="text-slate-600 mb-2">
+      Özellikle iş kıyafetleri ve özel gün kıyafetleri için tam kapsamlı bakım.
+    </p>
+    <ul class="list-disc list-inside text-slate-600 space-y-1">
+      <li>Kırışıklık gideren profesyonel ütüleme</li>
+      <li>Askıda veya özel paketli teslim</li>
+      <li>Toplu teslimat için uygun</li>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-4">
+    <h2 class="font-semibold text-lg mb-2">4. Sadece Ütü</h2>
+    <p class="text-slate-600 mb-2">
+      Evde yıkadığınız ama ütülemekle uğraşmak istemediğiniz kıyafetler için.
+    </p>
+    <ul class="list-disc list-inside text-slate-600 space-y-1">
+      <li>Gömlek, pantolon, elbise gibi ürünlerde hassas ütü</li>
+      <li>Buharlı ve profesyonel ekipmanlar</li>
+      <li>Günlük hayatta büyük zaman tasarrufu</li>
+    </ul>
+  </div>
+</div>
+
+<div class="mt-8 bg-sky-50 border border-sky-100 rounded-xl p-4 text-sm flex flex-col md:flex-row items-center justify-between gap-3">
+  <div>
+    <h3 class="font-semibold mb-1">Online sipariş ile tüm bu hizmetler kapınızda.</h3>
+    <p class="text-slate-600">
+      Siparişinizi birkaç adımda oluşturun, kuryemiz kıyafetlerinizi adresinizden alıp size geri getirsin.
+    </p>
+  </div>
+  <a href="{{ url_for('siparis_olustur') }}"
+     class="inline-flex items-center px-4 py-2 rounded-md bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm">
+    Online Sipariş Ver
+  </a>
+</div>
+{% endblock %}

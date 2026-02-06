@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Yönetim Paneli | AKPAK{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Yönetim Paneli</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="bg-white shadow rounded-lg p-4">
+    <p class="text-sm text-slate-500">Toplam Müşteri</p>
+    <p class="text-3xl font-bold text-slate-800">{{ toplam_musteri }}</p>
+  </div>
+  <div class="bg-white shadow rounded-lg p-4">
+    <p class="text-sm text-slate-500">Toplam Sipariş</p>
+    <p class="text-3xl font-bold text-slate-800">{{ toplam_siparis }}</p>
+  </div>
+  <div class="bg-white shadow rounded-lg p-4">
+    <p class="text-sm text-slate-500">Toplam Ciro</p>
+    <p class="text-3xl font-bold text-slate-800">{{ "%.2f"|format(toplam_ciro) }} ₺</p>
+  </div>
+</div>
+
+<!-- Siparişler listesi: tüm siparişler 5'erli sayfalara bölünmüş halde -->
+<h2 class="text-xl font-semibold mb-3">Siparişler</h2>
+<div class="bg-white shadow rounded-lg overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-800 text-white">
+      <tr>
+        <th class="px-3 py-2 text-left">ID</th>
+        <th class="px-3 py-2 text-left">Müşteri</th>
+        <th class="px-3 py-2 text-left">Tarih</th>
+        <th class="px-3 py-2 text-left">Durum</th>
+        <th class="px-3 py-2 text-left">Ödeme</th>
+        <th class="px-3 py-2 text-right">Tutar</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if siparisler %}
+      {% for s in siparisler %}
+        <tr class="border-b last:border-b-0 hover:bg-slate-50">
+          <td class="px-3 py-2">SP-{{ s.siparis_id }}</td>
+          <td class="px-3 py-2">{{ s.musteri_adi }}</td>
+          <td class="px-3 py-2">{{ s.siparis_tarihi }}</td>
+          <td class="px-3 py-2 uppercase">{{ s.durum }}</td>
+          <td class="px-3 py-2">{{ s.odeme_yontemi }}</td>
+          <td class="px-3 py-2 text-right">{{ "%.2f"|format(s.toplam_tutar) }} ₺</td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td class="px-3 py-2" colspan="6">Sipariş bulunamadı.</td></tr>
+    {% endif %}
+    </tbody>
+  </table>
+
+  <!-- Sayfalama kontrolleri -->
+  <div class="p-3 flex items-center justify-between border-t">
+    {% if page and page > 1 %}
+      <a href="{{ url_for('admin_index', page=page-1) }}" class="px-3 py-2 border rounded hover:bg-slate-200 text-slate-700">Önceki</a>
+    {% else %}
+      <span class="px-3 py-2 text-slate-400">Önceki</span>
+    {% endif %}
+    <span class="text-sm">Sayfa {{ page or 1 }} / {{ total_pages or 1 }}</span>
+    {% if page and total_pages and page < total_pages %}
+      <a href="{{ url_for('admin_index', page=page+1) }}" class="px-3 py-2 border rounded hover:bg-slate-200 text-slate-700">Sonraki</a>
+    {% else %}
+      <span class="px-3 py-2 text-slate-400">Sonraki</span>
+    {% endif %}
+  </div>
+</div>
+
+<h2 class="text-xl font-semibold mb-3 mt-8">Gelen Mesajlar</h2>
+<div class="bg-white shadow rounded-lg overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-800 text-white">
+      <tr>
+        <th class="px-3 py-2 text-left">Ad</th>
+        <th class="px-3 py-2 text-left">E-posta</th>
+        <th class="px-3 py-2 text-left">Mesaj</th>
+        <th class="px-3 py-2 text-left">Tarih</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if messages %}
+        {% for msg in messages %}
+        <tr class="border-b last:border-b-0 hover:bg-slate-50">
+          <td class="px-3 py-2">{{ msg.ad or 'Anonim' }}</td>
+          <td class="px-3 py-2">{{ msg.email or '-' }}</td>
+          <td class="px-3 py-2">{{ msg.mesaj }}</td>
+          <td class="px-3 py-2">{{ msg.tarih }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr><td class="px-3 py-2" colspan="4">Henüz mesaj yok.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
